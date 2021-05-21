@@ -15,6 +15,12 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.concurrent.ConcurrentHashMap;
 
+/*
+ * This class implements the Resilience 4J circuit breaker with fallback logic.  Configuration for the @CircuitBreaker with fallback annotation can be found in the src/main/resources/application.yml file.
+ * You can test this code by running src/python/getMetrics.py script with the fallback parameter (e.g. getMetrics.py fallback).  That will hit this
+ * specific code.
+ */
+
 @Service
 public class QueueServiceFallbackFacade {
 
@@ -25,21 +31,22 @@ public class QueueServiceFallbackFacade {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(QueueServiceFallbackFacade.class);
 
-    @CircuitBreaker(name="genesysfallback")
-    //@Retry(name="genesysretry")
+    @CircuitBreaker(name = "genesysfallback")
+    // @Retry(name="genesysretry")
     public QueueEntityListing getQueueInfo(String queueName) throws IOException, ApiException {
         return queueServiceProxy.getQueueInfo(queueName);
     }
 
-    @CircuitBreaker(name="genesysfallback", fallbackMethod = "getQueueObservationMetricFallback")
-   // @Retry(name="genesysretry")
-    public QueueObservationQueryResponse getQueueObservationMetrics(String queueId) throws ApiException, RetryException, IOException {
-        QueueObservationQueryResponse response =  queueServiceProxy.getQueueObservationMetrics(queueId);
-        fallbackMetrics.put(queueId,response);
+    @CircuitBreaker(name = "genesysfallback", fallbackMethod = "getQueueObservationMetricFallback")
+    // @Retry(name="genesysretry")
+    public QueueObservationQueryResponse getQueueObservationMetrics(String queueId)
+            throws ApiException, RetryException, IOException {
+        QueueObservationQueryResponse response = queueServiceProxy.getQueueObservationMetrics(queueId);
+        fallbackMetrics.put(queueId, response);
         return response;
     }
 
-    public  QueueObservationQueryResponse getQueueObservationMetricFallback(String queueId,Exception e) {
+    public QueueObservationQueryResponse getQueueObservationMetricFallback(String queueId, Exception e) {
         LOGGER.info("I am in the getQueueObservationMetricFallback fallback method with queue id {}", queueId);
         QueueObservationQueryResponse response = fallbackMetrics.get(queueId);
 

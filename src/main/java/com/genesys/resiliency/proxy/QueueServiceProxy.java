@@ -14,15 +14,16 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+  The QueueServiceProxy class is where we do the actual Genesys Cloud Java SDK calls.
+*/
 @Component
 public class QueueServiceProxy {
     private static final Logger LOGGER = LoggerFactory.getLogger(QueueServiceRetryFacade.class);
 
-    private void resolveRetryException(ApiException e) throws RetryException, ApiException{
-        if (e.getStatusCode()==429 ||
-                e.getStatusCode()==502 ||
-                e.getStatusCode()==503 ||
-                e.getStatusCode()==504) {
+    private void resolveRetryException(ApiException e) throws RetryException, ApiException {
+        if (e.getStatusCode() == 429 || e.getStatusCode() == 502 || e.getStatusCode() == 503
+                || e.getStatusCode() == 504) {
             LOGGER.info("A retryable exception has occurred. Resilience4j will retry based on defined retry policy.");
             throw new RetryException(e);
         }
@@ -30,11 +31,12 @@ public class QueueServiceProxy {
         throw e;
     }
 
-    public QueueObservationQueryResponse getQueueObservationMetrics(String queueId) throws ApiException, RetryException, IOException {
+    public QueueObservationQueryResponse getQueueObservationMetrics(String queueId)
+            throws ApiException, RetryException, IOException {
         RoutingApi routingAPI = new RoutingApi();
         QueueObservationQuery query = new QueueObservationQuery();
 
-        //Setup my predicates
+        // Setup my predicates
         QueueObservationQueryPredicate predicate = new QueueObservationQueryPredicate();
         predicate.setDimension(QueueObservationQueryPredicate.DimensionEnum.QUEUEID);
         predicate.setOperator(QueueObservationQueryPredicate.OperatorEnum.MATCHES);
@@ -46,7 +48,7 @@ public class QueueServiceProxy {
         filter.setType(QueueObservationQueryFilter.TypeEnum.OR);
         filter.setPredicates(predicates);
 
-        List<QueueObservationQuery.MetricsEnum> metrics= new ArrayList<>();
+        List<QueueObservationQuery.MetricsEnum> metrics = new ArrayList<>();
         metrics.add(QueueObservationQuery.MetricsEnum.OACTIVEUSERS);
         metrics.add(QueueObservationQuery.MetricsEnum.OINTERACTING);
         metrics.add(QueueObservationQuery.MetricsEnum.OMEMBERUSERS);
@@ -62,13 +64,11 @@ public class QueueServiceProxy {
 
         try {
             return routingAPI.postAnalyticsQueuesObservationsQuery(query);
-        }catch(ApiException e){
+        } catch (ApiException e) {
             resolveRetryException(e);
         }
         return null;
     }
-
-
 
     public QueueEntityListing getQueueInfo(String queueName) throws IOException, RetryException, ApiException {
         RoutingApi routingApi = new RoutingApi();
@@ -77,7 +77,7 @@ public class QueueServiceProxy {
 
         try {
             return routingApi.getRoutingQueues(request);
-        } catch(ApiException e){
+        } catch (ApiException e) {
             resolveRetryException(e);
         }
 

@@ -43,13 +43,13 @@ Based on the diagram above, we are going to cover 6 resiliency patterns in this 
 
 This code example provides example implementations of all of the above in the follow source files:
 
-1. [Caching](src/main/java/com/genesys/resiliency/QueueServiceCacheFacade.java)
-2. [Retrys](src/main/java/com/genesys/resiliency/QueueServiceRetryFacade.java)
-3. [Timeouts](src/main/java/com/genesys/resiliency/QueueServiceTimeoutFacade.java)
-4. [Circuit Breakers](src/main/java/com/genesys/resliency/QueueServiceCircuitBreakerFacade.javal)
-5. [Fallbacks](src/main/java/com/genesys/resiliency/QueueServiceFallbackFacade.java)
-6. [Bulkheads](src/main/java/com/genesys/resiliency/QueueServiceStackedFacade.javal)
-7. [All together](src/main/java/com/genesys/resiliency/QueueServiceStackedFacade.java)
+1. [Caching](https://github.com/MyPureCloud/resiliency-patterns-examples/blob/NO-JIRA-Initial-commit/src/main/java/com/genesys/resiliency/service/QueueServiceCacheFacade.java)
+2. [Retrys](https://github.com/MyPureCloud/resiliency-patterns-examples/blob/NO-JIRA-Initial-commit/src/main/java/com/genesys/resiliency/service/QueueServiceRetryFacade.java)
+3. [Timeouts](https://github.com/MyPureCloud/resiliency-patterns-examples/blob/NO-JIRA-Initial-commit/src/main/java/com/genesys/resiliency/service/QueueServiceTimeoutFacade.java)
+4. [Circuit Breakers](https://github.com/MyPureCloud/resiliency-patterns-examples/blob/NO-JIRA-Initial-commit/src/main/java/com/genesys/resiliency/service/QueueServiceCircuitBreakerFacade.javal)
+5. [Fallbacks](https://github.com/MyPureCloud/resiliency-patterns-examples/blob/NO-JIRA-Initial-commit/src/main/java/com/genesys/resiliency/service/QueueServiceFallbackFacade.java)
+6. [Bulkheads](https://github.com/MyPureCloud/resiliency-patterns-examples/blob/NO-JIRA-Initial-commit/src/main/java/com/genesys/resiliency/service/QueueServiceStackedFacade.javal)
+7. [All together](https://github.com/MyPureCloud/resiliency-patterns-examples/blob/NO-JIRA-Initial-commit/src/main/java/com/genesys/resiliency/service/QueueServiceStackedFacade.java)
 
 
 # Pre-requisite

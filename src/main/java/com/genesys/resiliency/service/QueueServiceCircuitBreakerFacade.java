@@ -13,6 +13,12 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 
+/*
+ * This class implements the Resilience 4J circuit breaker logic.  Configuration for the @Circuitbreaker annotation can be found in the src/main/resources/application.yml file.
+ * You can test this code by running src/python/getMetrics.py script with the circuitbreaker parameter (e.g. getMetrics.py circuitbreaker).  That will hit this
+ * specific code.
+ */
+
 @Service
 public class QueueServiceCircuitBreakerFacade {
 
@@ -21,13 +27,14 @@ public class QueueServiceCircuitBreakerFacade {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(QueueServiceCircuitBreakerFacade.class);
 
-    @CircuitBreaker(name="genesyscircuit")
+    @CircuitBreaker(name = "genesyscircuit")
     public QueueEntityListing getQueueInfo(String queueName) throws IOException, ApiException {
         return queueServiceProxy.getQueueInfo(queueName);
     }
 
-    @CircuitBreaker(name="genesyscircuit")
-    public QueueObservationQueryResponse getQueueObservationMetrics(String queueId) throws ApiException, RetryException, IOException {
+    @CircuitBreaker(name = "genesyscircuit")
+    public QueueObservationQueryResponse getQueueObservationMetrics(String queueId)
+            throws ApiException, RetryException, IOException {
         return queueServiceProxy.getQueueObservationMetrics(queueId);
     }
 }

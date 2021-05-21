@@ -18,6 +18,12 @@ import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 
+/*
+ * This class combines all of the patterns. 
+ * You can test this code by running src/python/getMetrics.py script with the all the resilience patterns implemented parameter (e.g. getMetrics.py stacked).  That will hit this
+ * specific code.
+ */
+
 @Service
 public class QueueServiceStackedFacade {
     private static final Logger LOGGER = LoggerFactory.getLogger(QueueServiceStackedFacade.class);
@@ -25,20 +31,19 @@ public class QueueServiceStackedFacade {
     @Autowired
     private QueueServiceProxy queueServiceProxy;
 
-    @TimeLimiter(name="genesystimeout")
-    @CircuitBreaker(name="genesyscircuit", fallbackMethod = "getQueueInfoFallback")
-    @Retry(name="genesysretry")
-    @Bulkhead(name="getqueueobservationmetrics")
-    public CompletableFuture<QueueObservationQueryResponse> getQueueObservationMetrics(String queueId) throws ApiException, RetryException, IOException {
-        CompletableFuture<QueueObservationQueryResponse> future = CompletableFuture
-                .supplyAsync(() -> {
-                    try {
-                        return queueServiceProxy.getQueueObservationMetrics(queueId);
-                    }
-                    catch (Exception e) {
-                        throw new CompletionException(e);
-                    }
-                });
+    @TimeLimiter(name = "genesystimeout")
+    @CircuitBreaker(name = "genesyscircuit", fallbackMethod = "getQueueInfoFallback")
+    @Retry(name = "genesysretry")
+    @Bulkhead(name = "getqueueobservationmetrics")
+    public CompletableFuture<QueueObservationQueryResponse> getQueueObservationMetrics(String queueId)
+            throws ApiException, RetryException, IOException {
+        CompletableFuture<QueueObservationQueryResponse> future = CompletableFuture.supplyAsync(() -> {
+            try {
+                return queueServiceProxy.getQueueObservationMetrics(queueId);
+            } catch (Exception e) {
+                throw new CompletionException(e);
+            }
+        });
         return future;
     }
 
@@ -49,19 +54,18 @@ public class QueueServiceStackedFacade {
         return CompletableFuture.completedFuture(response);
     }
 
-    @TimeLimiter( name ="genesystimeout")
-    @CircuitBreaker(name="genesyscircuit")
-    @Retry(name="genesysretry")
-    @Bulkhead(name="getqueueinfo")
+    @TimeLimiter(name = "genesystimeout")
+    @CircuitBreaker(name = "genesyscircuit")
+    @Retry(name = "genesysretry")
+    @Bulkhead(name = "getqueueinfo")
     public CompletableFuture<QueueEntityListing> getQueueInfo(String queueName) {
-        CompletableFuture<QueueEntityListing> future = CompletableFuture
-                .supplyAsync(() -> {
-                    try {
-                        return queueServiceProxy.getQueueInfo(queueName);
-                    } catch (Exception e) {
-                        throw new CompletionException(e);
-                    }
-                });
+        CompletableFuture<QueueEntityListing> future = CompletableFuture.supplyAsync(() -> {
+            try {
+                return queueServiceProxy.getQueueInfo(queueName);
+            } catch (Exception e) {
+                throw new CompletionException(e);
+            }
+        });
         return future;
 
     }
