@@ -43,14 +43,13 @@ Based on the diagram above, we are going to cover 6 resiliency patterns in this 
 
 This code example provides example implementations of all of the above in the follow source files:
 
-1. [Caching](https://github.com/MyPureCloud/resiliency-patterns-examples/blob/NO-JIRA-Initial-commit/src/main/java/com/genesys/resiliency/service/QueueServiceCacheFacade.java)
-2. [Retrys](https://github.com/MyPureCloud/resiliency-patterns-examples/blob/NO-JIRA-Initial-commit/src/main/java/com/genesys/resiliency/service/QueueServiceRetryFacade.java)
-3. [Timeouts](https://github.com/MyPureCloud/resiliency-patterns-examples/blob/NO-JIRA-Initial-commit/src/main/java/com/genesys/resiliency/service/QueueServiceTimeoutFacade.java)
-4. [Circuit Breakers](https://github.com/MyPureCloud/resiliency-patterns-examples/blob/NO-JIRA-Initial-commit/src/main/java/com/genesys/resiliency/service/QueueServiceCircuitBreakerFacade.javal)
-5. [Fallbacks](https://github.com/MyPureCloud/resiliency-patterns-examples/blob/NO-JIRA-Initial-commit/src/main/java/com/genesys/resiliency/service/QueueServiceFallbackFacade.java)
-6. [Bulkheads](https://github.com/MyPureCloud/resiliency-patterns-examples/blob/NO-JIRA-Initial-commit/src/main/java/com/genesys/resiliency/service/QueueServiceStackedFacade.javal)
-7. [All together](https://github.com/MyPureCloud/resiliency-patterns-examples/blob/NO-JIRA-Initial-commit/src/main/java/com/genesys/resiliency/service/QueueServiceStackedFacade.java)
-
+1. [Caching](src/main/java/com/genesys/resiliency/service/QueueServiceCacheFacade.java)
+2. [Retrys](src/main/java/com/genesys/resiliency/service/QueueServiceRetryFacade.java)
+3. [Timeouts](src/main/java/com/genesys/resiliency/service/QueueServiceTimeoutFacade.java)
+4. [Circuit Breakers](src/main/java/com/genesys/resiliency/service/QueueServiceCircuitBreakerFacade.java)
+5. [Fallbacks](src/main/java/com/genesys/resiliency/service/QueueServiceFallbackFacade.java)
+6. [Bulkheads](src/main/java/com/genesys/resiliency/service/QueueServiceStackedFacade.java)
+7. [All together](src/main/java/com/genesys/resiliency/service/QueueServiceStackedFacade.java)
 
 # Pre-requisite
 While all of the code examples for this developer starting guide should run in older versions of Java (Java 8+) and Maven, the code examples were built using.
@@ -59,7 +58,6 @@ While all of the code examples for this developer starting guide should run in o
 - Maven 3.6.0
 
 # Install and run the code
-
 To run the code you must do the following:
 
 1. Setup an [OAuth2 Client Credential grant](https://help.mypurecloud.com/articles/create-an-oauth-client/) in your Genesys Cloud Organization. Make sure your OAuth2 client credential grant has the following permissions:
@@ -111,6 +109,6 @@ If you are not developing your code using a JVM-based language there are still r
 # Additional Material
 1. [Creating an OAuth Client Credential Grant](https://help.mypurecloud.com/articles/create-an-oauth-client/)
 2. [Genesys Java SDK](/api/rest/client-libraries/javascript/)
-3. Caffeine Cache](https://github.com/ben-manes/caffeine))
+3. [Caffeine Cache](https://github.com/ben-manes/caffeine))
 4. [Resiliency 4J](https://github.com/resilience4j/resilience4j)
 
