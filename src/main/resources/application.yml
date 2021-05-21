@@ -1,0 +1,97 @@
+spring:
+  profiles:
+    active: chaos-monkey
+  cache:
+    cache-names: queueCache, queueMetrics
+    caffeine:
+      specs:
+        queueCache: maximumSize=500, expireAfterAccess=1d
+        queueMetrics: maximumSize=500, expireAfterAccess=60s
+
+server:
+  port: 4070
+  servlet:
+    context-path: /api
+
+jetty:
+  threadPool:
+    maxThreads: 100
+    minThreads: 10
+
+genesys:
+  region: "https://api.mypurecloud.com"
+  clientId: "<<OAUTHCLIENTID"
+  clientSecret: "OAUTHCLIENTSECRET"
+
+management:
+  server:
+    port: 8888
+  endpoint:
+    chaosmonkey:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+chaos:
+  monkey:
+    enabled: false
+    watcher:
+      component: true
+    assaults:
+      exceptionsActive: true
+      latencyActive: false
+      level: 10
+      latencyRangeStart: 6000
+      latencyRangeEnd: 7000
+      watchedCustomServices:
+        - com.genesys.resiliency.proxy.QueueServiceProxy.getQueueObservationMetrics
+
+resilience4j.timelimiter:
+  configs:
+    default:
+      cancelRunningFuture: false
+      timeoutDuration: 5s
+  instances:
+    genesystimeout:
+      baseConfig: default
+
+resilience4j.retry:
+  instances:
+    genesysretry:
+      waitDuration: 55s
+      maxAttempts: 3
+      enableExponentialBackoff: true
+      exponentialBackoffMultiplier: 1
+      retryExceptions:
+        - com.genesys.resiliency.exception.RetryException
+
+resilience4j.circuitbreaker:
+  instances:
+    genesyscircuit:
+      registerHealthIndicator: true
+      slidingWindowSize: 30
+      permittedNumberOfCallsInHalfOpenState: 3
+      slidingWindowType: TIME_BASED
+      waitDurationInOpenState: 10s
+      failureRateThreshold: 10.0
+      writablestacktraceEnabled: true
+    genesysfallback:
+      registerHealthIndicator: true
+      slidingWindowSize: 30
+      permittedNumberOfCallsInHalfOpenState: 3
+      slidingWindowType: TIME_BASED
+      waitDurationInOpenState: 10s
+      failureRateThreshold: 10.0
+      writablestacktraceEnabled: true
+
+resilience4j.bulkhead:
+  configs:
+    default:
+      maxConcurrentCalls: 100
+  instances:
+    getqueueobservationmetrics:
+      maxConcurrentCalls: 10
+    getqueueinfo:
+      maxConcurrentCalls: 20
